@@ -1,49 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <title>Firebase 로그인 테스트</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GuineaRun – Score & Item MVP</title>
 </head>
 <body>
-  <h1>Firebase 로그인 테스트</h1>
-  <button id="loginBtn">로그인</button>
+  <h1>GuineaRun – Score & Item</h1>
+  <p>이 페이지는 <code>src/api/client.js</code>를 통해 서버와 통신합니다.</p>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
+  <div>
+    <button id="btn-health">/api/health</button>
+    <pre id="out-health"></pre>
+  </div>
 
-    // 🔹 복사한 Firebase config 붙이기
-    // 🔹 복사한 Firebase config 붙이기
-    const firebaseConfig = {
-      apiKey: "AIzaSyDU_1TvlOBEPq09gMN0sqSAr_14BfKnDVI",
-      authDomain: "guinea-run.firebaseapp.com",
-      projectId: "guinea-run",
-      storageBucket: "guinea-run.firebasestorage.app",
-      messagingSenderId: "194478950209",
-      appId: "1:194478950209:web:403a567adbd785abe543c0",
-      measurementId: "G-NQYQEE1RF0"
-    };
+  <div>
+    <input id="userIdScore" placeholder="userId" value="user1" />
+    <input id="scoreVal" type="number" placeholder="score" value="200" />
+    <button id="btn-save">/score/save</button>
+    <button id="btn-rank">/score/rank</button>
+    <pre id="out-score"></pre>
+  </div>
 
+  <div>
+    <button id="btn-list">/item/list</button>
+    <input id="userIdBuy" placeholder="userId" value="user1" />
+    <input id="itemIdBuy" placeholder="itemId" value="hat01" />
+    <button id="btn-buy">/item/buy</button>
+    <input id="userIdEquip" placeholder="userId" value="user1" />
+    <input id="itemIdEquip" placeholder="itemId" value="hat01" />
+    <button id="btn-equip">/item/equip</button>
+    <pre id="out-item"></pre>
+  </div>
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+  <div>
+    <input id="userIdInv" placeholder="userId" value="user1" />
+    <button id="btn-inv">/user/inventory</button>
+    <input id="userIdBal" placeholder="userId" value="user1" />
+    <button id="btn-bal">/wallet/balance</button>
+    <pre id="out-user"></pre>
+  </div>
 
-    document.getElementById("loginBtn").addEventListener("click", async () => {
-      const email = "test@example.com"; // 회원 이메일
-      const password = "123456";        // 비밀번호
-
-      try {
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
-        const user = userCredential.user;
-        const idToken = await user.getIdToken();
-        console.log("ID Token:", idToken); // 콘솔에서 확인 가능
-        alert("로그인 성공! 콘솔에서 토큰 확인")
-      } catch (error) {
-        console.error(error);
-        alert("로그인 실패! 콘솔 확인")
-      }
-    });
-  </script>
+  <script type="module" src="./index.js"></script>
 </body>
 </html>
-

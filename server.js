@@ -4,7 +4,6 @@ import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
 
-// __dirname 대체 (ESM)
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -12,24 +11,24 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// ---------- 정적 파일(index.html 등) 서빙 ----------
-app.use(express.static(__dirname)); // 루트에 index.html, index.js가 있으므로 루트 공개
+// 정적 파일(index.html, index.js) 서빙
+app.use(express.static(__dirname));
 
-// ---------- Mock DB ----------
+// ---------------- Mock DB ----------------
 let scores = []; // { userId, score, date }
 let items = [
   { itemId: "hat01", name: "기니 모자", price: 100, type: "hat" },
   { itemId: "ribbon01", name: "리본",   price:  80, type: "ribbon" }
 ];
-let userItems = {};           // { [userId]: [{ itemId, type, isEquipped, acquiredAt }] }
+let userItems = {};          // { [userId]: [{ itemId, type, isEquipped, acquiredAt }] }
 let wallets   = { user1: 200 }; // { [userId]: hay }
 
-// ---------- 헬스체크 ----------
+// ---------------- Health ----------------
 app.get("/api/health", (_req, res) => {
   res.json({ ok: true, msg: "GuineaRun API server running" });
 });
 
-// ---------- SCORE ----------
+// ---------------- SCORE ----------------
 app.post("/score/save", (req, res) => {
   const { userId, score } = req.body || {};
   if (!userId || typeof score !== "number") {
@@ -50,7 +49,7 @@ app.get("/score/rank", (req, res) => {
   return res.json({ ok: true, ranks });
 });
 
-// ---------- ITEM ----------
+// ---------------- ITEM ----------------
 app.get("/item/list", (_req, res) => {
   res.json({ ok: true, items });
 });
@@ -86,7 +85,7 @@ app.post("/item/equip", (req, res) => {
   // 동일 타입 모두 해제
   for (const it of list) if (it.type === meta.type) it.isEquipped = false;
 
-  // 대상 찾아서 토글
+  // 대상 찾아 equip 적용
   const target = list.find(i => i.itemId === itemId);
   if (!target) return res.status(404).json({ ok: false, error: "not owned" });
   target.isEquipped = !!equip;
@@ -94,7 +93,7 @@ app.post("/item/equip", (req, res) => {
   res.json({ ok: true });
 });
 
-// ---------- 유틸 ----------
+// ---------------- 유틸 ----------------
 app.get("/user/inventory", (req, res) => {
   const userId = req.query.userId;
   const list = userItems[userId] ?? [];
@@ -107,14 +106,13 @@ app.get("/wallet/balance", (req, res) => {
   res.json({ ok: true, hay });
 });
 
-// ---------- SPA 라우팅(Express v5 대응) ----------
-// API 경로를 제외한 나머지는 index.html로 보냄
+// ---------------- SPA 라우팅(Express v5 안전 버전) ----------------
+// API 경로를 제외한 나머지는 index.html로
 app.get(/^(?!\/(score|item|api|user|wallet)\b).*/, (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
-
-// ---------- RUN ----------
+// ---------------- RUN ----------------
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`✅ Server running on http://localhost:${PORT}`);

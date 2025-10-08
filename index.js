@@ -1,65 +1,57 @@
-import express from "express";
-import cors from "cors";
-import admin from "firebase-admin";
-import { readFileSync } from "fs";
+// index.js (ESM in browser)
+import { ScoreAPI, ItemAPI, UserAPI, FRUIT_SCORES } from "./src/api/client.js";
 
-// 🔑 Firebase 서비스 계정 키 JSON 파일 불러오기
-const serviceAccount = JSON.parse(readFileSync("./serviceAccountKey.json", "utf8"));
+const el = (id) => document.getElementById(id);
+const show = (id, data) => el(id).textContent = JSON.stringify(data, null, 2);
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
+// Health
+el("btn-health").addEventListener("click", async () => {
+  const data = await UserAPI.health();
+  show("out-health", data);
 });
 
-const db = admin.firestore();
-
-const app = express();
-app.use(cors());
-app.use(express.json());
-
-// =====================
-// 1️⃣ 테스트용 라우트
-// =====================
-app.get("/", (req, res) => {
-  res.send("GuineaRun API is running!");
+// Score
+el("btn-save").addEventListener("click", async () => {
+  const userId = el("userIdScore").value.trim();
+  const score = Number(el("scoreVal").value) + FRUIT_SCORES.cherry; // 예시로 체리 가산
+  const data = await ScoreAPI.save({ userId, score });
+  show("out-score", data);
 });
 
-// =====================
-// 2️⃣ 토큰 검증 미들웨어
-// =====================
-async function authenticateToken(req, res, next) {
-  const authHeader = req.headers.authorization;
-  if (!authHeader) return res.status(401).json({ error: "No token provided" });
-
-  const token = authHeader.split(" ")[1]; // "Bearer <ID_TOKEN>"
-
-  try {
-    const decodedToken = await admin.auth().verifyIdToken(token);
-    req.user = decodedToken; // UID, 이메일 등 저장
-    next();
-  } catch (error) {
-    res.status(401).json({ error: "Invalid token" });
-  }
-}
-
-// =====================
-// 3️⃣ 로그인한 사용자 정보 조회 API
-// =====================
-app.get("/users/me", authenticateToken, async (req, res) => {
-  try {
-    const userRecord = await admin.auth().getUser(req.user.uid);
-    res.json({
-      uid: userRecord.uid,
-      email: userRecord.email,
-      displayName: userRecord.displayName
-    });
-  } catch (error) {
-    res.status(404).json({ error: "User not found" });
-  }
+el("btn-rank").addEventListener("click", async () => {
+  const data = await ScoreAPI.rank({ limit: 10 });
+  show("out-score", data);
 });
 
-// =====================
-// 4️⃣ 서버 실행
-// =====================
-app.listen(3000, () => {
-  console.log("✅ Server started on http://localhost:3000");
+// Item
+el("btn-list").addEventListener("click", async () => {
+  const data = await ItemAPI.list();
+  show("out-item", data);
+});
+
+el("btn-buy").addEventListener("click", async () => {
+  const userId = el("userIdBuy").value.trim();
+  const itemId = el("itemIdBuy").value.trim();
+  const data = await ItemAPI.buy({ userId, itemId });
+  show("out-item", data);
+});
+
+el("btn-equip").addEventListener("click", async () => {
+  const userId = el("userIdEquip").value.trim();
+  const itemId = el("itemIdEquip").value.trim();
+  const data = await ItemAPI.equip({ userId, itemId, equip: true });
+  show("out-item", data);
+});
+
+// User
+el("btn-inv").addEventListener("click", async () => {
+  const userId = el("userIdInv").value.trim();
+  const data = await UserAPI.inventory({ userId });
+  show("out-user", data);
+});
+
+el("btn-bal").addEventListener("click", async () => {
+  const userId = el("userIdBal").value.trim();
+  const data = await UserAPI.balance({ userId });
+  show("out-user", data);
 });
