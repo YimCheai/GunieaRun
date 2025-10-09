@@ -1,8 +1,8 @@
-// src/api/client.js  (ESM)
-// 모든 네트워크 요청은 이 파일만 거치도록!
-const BASE_URL = import.meta.env?.VITE_API_BASE ?? "http://localhost:3000";
+// src/api/client.js
+const BASE_URL =
+  (typeof import.meta !== "undefined" && import.meta.env?.VITE_API_BASE) || "";
 
-// 공통 fetch 래퍼
+/** 공통 fetch 래퍼 */
 async function request(path, { method = "GET", body, token } = {}) {
   const headers = { "Content-Type": "application/json" };
   if (token) headers["Authorization"] = `Bearer ${token}`;
@@ -13,7 +13,6 @@ async function request(path, { method = "GET", body, token } = {}) {
     body: body ? JSON.stringify(body) : undefined,
   });
 
-  // 공통 에러 처리
   const text = await res.text();
   let data;
   try { data = text ? JSON.parse(text) : {}; } catch { data = { raw: text }; }
@@ -25,7 +24,18 @@ async function request(path, { method = "GET", body, token } = {}) {
   return data;
 }
 
-// 개별 도메인 API (점수/아이템/지갑/유틸)
+/* ---------- User ---------- */
+export const UserAPI = {
+  register: ({ userId, nickname }, token) =>
+    request("/user/register", { method: "POST", body: { userId, nickname }, token }),
+  info: ({ userId }, token) =>
+    request(`/user/info?userId=${encodeURIComponent(userId)}`, { token }),
+  inventory: ({ userId }, token) =>
+    request(`/user/inventory?userId=${encodeURIComponent(userId)}`, { token }),
+  health: () => request("/api/health"),
+};
+
+/* ---------- Score ---------- */
 export const ScoreAPI = {
   save: ({ userId, score }, token) =>
     request("/score/save", { method: "POST", body: { userId, score }, token }),
@@ -33,6 +43,7 @@ export const ScoreAPI = {
     request(`/score/rank?limit=${limit}`, { token }),
 };
 
+/* ---------- Item ---------- */
 export const ItemAPI = {
   list: (token) => request("/item/list", { token }),
   buy: ({ userId, itemId }, token) =>
@@ -41,21 +52,6 @@ export const ItemAPI = {
     request("/item/equip", { method: "POST", body: { userId, itemId, equip }, token }),
 };
 
-export const UserAPI = {
-  inventory: ({ userId }, token) =>
-    request(`/user/inventory?userId=${encodeURIComponent(userId)}`, { token }),
-  balance: ({ userId }, token) =>
-    request(`/wallet/balance?userId=${encodeURIComponent(userId)}`, { token }),
-  health: () => request("/api/health"),
-};
-
-// 도메인 상수(점/아이템 타입 등) — 프론트 전역에서 쓰게 export
-export const ITEM_TYPES = Object.freeze({
-  HAT: "hat",
-  RIBBON: "ribbon",
-});
-
-export const FRUIT_SCORES = Object.freeze({
-  peach: 10,   // 복숭아
-  cherry: 20,  // 체리 (복숭아보다 점수 높음)
-});
+/* ---------- 상수 (명명 통일) ---------- */
+export const ITEM_TYPES = Object.freeze({ HAT: "hat", RIBBON: "ribbon" });
+export const FRUIT_SCORES = Object.freeze({ peach: 10, cherry: 20 });

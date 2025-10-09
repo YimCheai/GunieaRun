@@ -3,42 +3,75 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>GuineaRun – Score & Item MVP</title>
+  <title>GuineaRun – API Test UI</title>
+  <style>
+    body { font-family: ui-sans-serif, system-ui, Segoe UI, Roboto, Arial; margin: 24px; }
+    h1 { margin-bottom: 8px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+    .card { border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,.05); }
+    label { display:block; font-size:12px; color:#6b7280; margin-bottom:4px; }
+    input { width: 100%; padding: 8px; border:1px solid #d1d5db; border-radius:8px; margin-bottom:8px; }
+    button { padding: 8px 12px; border-radius: 8px; border: 1px solid #111827; background:#111827; color:#fff; cursor:pointer; }
+    button.secondary { background:#fff; color:#111827; border-color:#d1d5db; }
+    pre { background:#0b1020; color:#e5e7eb; padding:12px; border-radius:10px; overflow:auto; max-height:220px; }
+    small { color:#6b7280; }
+  </style>
 </head>
 <body>
-  <h1>GuineaRun – Score & Item</h1>
-  <p>이 페이지는 <code>src/api/client.js</code>를 통해 서버와 통신합니다.</p>
+  <h1>GuineaRun – API Test</h1>
+  <p><small>모든 네트워크는 <code>src/api/client.js</code>를 통해서만 호출됩니다.</small></p>
 
-  <div>
-    <button id="btn-health">/api/health</button>
-    <pre id="out-health"></pre>
-  </div>
+  <div class="grid">
+    <!-- Health -->
+    <div class="card">
+      <h3>Health</h3>
+      <button id="btn-health">GET /api/health</button>
+      <pre id="out-health"></pre>
+    </div>
 
-  <div>
-    <input id="userIdScore" placeholder="userId" value="user1" />
-    <input id="scoreVal" type="number" placeholder="score" value="200" />
-    <button id="btn-save">/score/save</button>
-    <button id="btn-rank">/score/rank</button>
-    <pre id="out-score"></pre>
-  </div>
+    <!-- User -->
+    <div class="card">
+      <h3>User</h3>
+      <label for="userId">userId</label>
+      <input id="userId" value="user1" />
+      <label for="nickname">nickname</label>
+      <input id="nickname" value="기니" />
 
-  <div>
-    <button id="btn-list">/item/list</button>
-    <input id="userIdBuy" placeholder="userId" value="user1" />
-    <input id="itemIdBuy" placeholder="itemId" value="hat01" />
-    <button id="btn-buy">/item/buy</button>
-    <input id="userIdEquip" placeholder="userId" value="user1" />
-    <input id="itemIdEquip" placeholder="itemId" value="hat01" />
-    <button id="btn-equip">/item/equip</button>
-    <pre id="out-item"></pre>
-  </div>
+      <div style="display:flex; gap:8px; margin-bottom:8px;">
+        <button id="btn-register">POST /user/register</button>
+        <button id="btn-userinfo" class="secondary">GET /user/info</button>
+      </div>
 
-  <div>
-    <input id="userIdInv" placeholder="userId" value="user1" />
-    <button id="btn-inv">/user/inventory</button>
-    <input id="userIdBal" placeholder="userId" value="user1" />
-    <button id="btn-bal">/wallet/balance</button>
-    <pre id="out-user"></pre>
+      <div style="display:flex; gap:8px;">
+        <button id="btn-inv" class="secondary">GET /user/inventory</button>
+      </div>
+      <pre id="out-user"></pre>
+    </div>
+
+    <!-- Score -->
+    <div class="card">
+      <h3>Score</h3>
+      <label for="scoreVal">score</label>
+      <input id="scoreVal" type="number" value="200" />
+      <div style="display:flex; gap:8px; margin-bottom:8px;">
+        <button id="btn-save">POST /score/save</button>
+        <button id="btn-rank" class="secondary">GET /score/rank?limit=10</button>
+      </div>
+      <pre id="out-score"></pre>
+    </div>
+
+    <!-- Item -->
+    <div class="card">
+      <h3>Item</h3>
+      <label for="itemIdBuy">itemId (buy/equip)</label>
+      <input id="itemIdBuy" value="hat01" />
+      <div style="display:flex; gap:8px; margin-bottom:8px;">
+        <button id="btn-list" class="secondary">GET /item/list</button>
+        <button id="btn-buy">POST /item/buy</button>
+        <button id="btn-equip" class="secondary">POST /item/equip (true)</button>
+      </div>
+      <pre id="out-item"></pre>
+    </div>
   </div>
 
   <script type="module" src="./index.js"></script>
