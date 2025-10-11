@@ -1,5 +1,5 @@
 // index.js
-import { UserAPI, ScoreAPI, ItemAPI, FRUIT_SCORES } from "./src/api/client.js";
+import { UserAPI, ScoreAPI, ItemAPI, FRUIT_SCORES } from "../frontend/src/api/client.js";
 
 const el = (id) => document.getElementById(id);
 const show = (id, data) => (el(id).textContent = JSON.stringify(data, null, 2));
