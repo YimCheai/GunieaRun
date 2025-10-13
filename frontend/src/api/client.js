@@ -25,32 +25,13 @@ async function request(path, { method = "GET", body, token } = {}) {
 }
 
 /* ---------- User ---------- */
-export const UserAPI = {
-  register: ({ userId, nickname }, token) =>
-    request("/user/register", { method: "POST", body: { userId, nickname }, token }),
-  info: ({ userId }, token) =>
-    request(`/user/info?userId=${encodeURIComponent(userId)}`, { token }),
-  inventory: ({ userId }, token) =>
-    request(`/user/inventory?userId=${encodeURIComponent(userId)}`, { token }),
-  health: () => request("/api/health"),
-};
+
 
 /* ---------- Score ---------- */
-export const ScoreAPI = {
-  save: ({ userId, score }, token) =>
-    request("/score/save", { method: "POST", body: { userId, score }, token }),
-  rank: ({ limit = 10 } = {}, token) =>
-    request(`/score/rank?limit=${limit}`, { token }),
-};
+
 
 /* ---------- Item ---------- */
-export const ItemAPI = {
-  list: (token) => request("/item/list", { token }),
-  buy: ({ userId, itemId }, token) =>
-    request("/item/buy", { method: "POST", body: { userId, itemId }, token }),
-  equip: ({ userId, itemId, equip }, token) =>
-    request("/item/equip", { method: "POST", body: { userId, itemId, equip }, token }),
-};
+
 
 /* ---------- 상수 (명명 통일) ---------- */
 export const ITEM_TYPES = Object.freeze({ HAT: "hat", RIBBON: "ribbon" });
