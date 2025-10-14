@@ -82,7 +82,7 @@ app.get("/score/rank", (req, res) => {
   res.json({ ok:true, ranks });
 });
 
- * ===============================*/
+ /* ===============================*/
 // 상점 아이템 목록
 app.get("/item/list", (_req, res) => res.json({ ok:true, items }));
 
