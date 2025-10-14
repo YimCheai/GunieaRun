@@ -1,57 +1,46 @@
-// src/api/client.js
-const BASE_URL =
-  (typeof import.meta !== "undefined" && import.meta.env?.VITE_API_BASE) || "";
+// 서버 주소 설정 (일단 환경 변수를 받았다고 치자..)
+const serverUrl = process.env.API_BASE || "";
+// 아직 process.env.API_BASE || "" 는 이해 못함... 뭐지?
 
-/** 공통 fetch 래퍼 */
-async function request(path, { method = "GET", body, token } = {}) {
-  const headers = { "Content-Type": "application/json" };
-  if (token) headers["Authorization"] = `Bearer ${token}`;
+async function requestServer(apiPath, { httpMethod = "GET", dataToSend, authToken } = {}) {
+  const headerInfo = { "Content-Type": "application/json" };
+  
+  if (authToken) headerInfo["Authorization"] = `Bearer ${authToken}`; // 여기는 아직 이해가 안 간다~~~~~~~~~~ Bearer는 운송자인데??
 
-  const res = await fetch(`${BASE_URL}${path}`, {
-    method,
-    headers,
-    body: body ? JSON.stringify(body) : undefined,
+  const serverResponse = await fetch(`${serverUrl}${apiPath}`, {
+    method: httpMethod,
+    headers: headerInfo,
+    body: dataToSend ? JSON.stringify(dataToSend) : undefined,
   });
 
-  const text = await res.text();
-  let data;
-  try { data = text ? JSON.parse(text) : {}; } catch { data = { raw: text }; }
-
-  if (!res.ok || data?.ok === false) {
-    const msg = data?.error || res.statusText || "Request failed";
-    throw new Error(`[API] ${method} ${path} -> ${msg}`);
+  const responseText = await serverResponse.text();
+  
+  let resultData;
+  
+  try { 
+    resultData = responseText ? JSON.parse(responseText) : {}; 
+  } catch { 
+    // raw가 생 것? 날 것? 의미라 그런 듯.
+    resultData = { raw: responseText }; 
   }
-  return data;
+
+  // 서버 응답이 실패 / 데이터에 ok: false가 있으면 에러 발생    선택적 체이닝 - a.?b a가 있어, 그러면 b해. 근데 a가 없어? 그러면 오류 없이 undefined를 반환.
+  if (!serverResponse.ok || resultData?.ok === false) {
+    // 에러 메시지를 여러 곳에서 찾아서 사용
+    const errorMessage = resultData?.error || serverResponse.statusText || "요청 실패";
+    throw new Error(`[API] ${httpMethod} ${apiPath} -> ${errorMessage}`);
+  }
+  return resultData;
 }
 
-/* ---------- User ---------- */
-export const UserAPI = {
-  register: ({ userId, nickname }, token) =>
-    request("/user/register", { method: "POST", body: { userId, nickname }, token }),
-  info: ({ userId }, token) =>
-    request(`/user/info?userId=${encodeURIComponent(userId)}`, { token }),
-  inventory: ({ userId }, token) =>
-    request(`/user/inventory?userId=${encodeURIComponent(userId)}`, { token }),
-  health: () => request("/api/health"),
-};
+export const item_Types = Object.freeze({ 
+  Hat: "hat", 
+  Ribbon: "ribbon" 
+});
 
-/* ---------- Score ---------- */
-export const ScoreAPI = {
-  save: ({ userId, score }, token) =>
-    request("/score/save", { method: "POST", body: { userId, score }, token }),
-  rank: ({ limit = 10 } = {}, token) =>
-    request(`/score/rank?limit=${limit}`, { token }),
-};
+export const fruit_Scores = Object.freeze({ 
+  peach: 10, 
+  cherry: 20 
+});
 
-/* ---------- Item ---------- */
-export const ItemAPI = {
-  list: (token) => request("/item/list", { token }),
-  buy: ({ userId, itemId }, token) =>
-    request("/item/buy", { method: "POST", body: { userId, itemId }, token }),
-  equip: ({ userId, itemId, equip }, token) =>
-    request("/item/equip", { method: "POST", body: { userId, itemId, equip }, token }),
-};
-
-/* ---------- 상수 (명명 통일) ---------- */
-export const ITEM_TYPES = Object.freeze({ HAT: "hat", RIBBON: "ribbon" });
-export const FRUIT_SCORES = Object.freeze({ peach: 10, cherry: 20 });
+export { requestServer as request };
