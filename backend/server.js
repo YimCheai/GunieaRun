@@ -54,9 +54,8 @@ app.get("/user/inventory", (req, res) => {
   res.json({ ok:true, inventory: userItems[userId] ?? [] });
 });
 
-/* ===============================
- * SCORE API
- * ===============================*/
+
+ /* ===============================*/
 // 점수 저장
 app.post("/score/save", (req, res) => {
   const { userId, score } = req.body || {};
@@ -83,8 +82,6 @@ app.get("/score/rank", (req, res) => {
   res.json({ ok:true, ranks });
 });
 
-/* ===============================
- * ITEM API
  * ===============================*/
 // 상점 아이템 목록
 app.get("/item/list", (_req, res) => res.json({ ok:true, items }));
@@ -122,9 +119,7 @@ app.post("/item/equip", (req, res) => {
   res.json({ ok:true });
 });
 
-/* ===============================
- * 기타
- * ===============================*/
+ /* ===============================*/
 app.get("/api/health", (_req, res) => res.json({ ok:true, msg:"Server running" }));
 
 // SPA 라우팅 (Express v5 대응): API 제외 나머지는 index.html

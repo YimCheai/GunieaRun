@@ -1,7 +1,19 @@
+import { request } from "./client.js";
 export const ItemAPI = {
-  list: (token) => request("/item/list", { token }),
-  buy: ({ userId, itemId }, token) =>
-    request("/item/buy", { method: "POST", body: { userId, itemId }, token }),
-  equip: ({ userId, itemId, equip }, token) =>
-    request("/item/equip", { method: "POST", body: { userId, itemId, equip }, token }),
+  getItemList: (authToken) => 
+    request("/item/list", { authToken }),
+
+  buyItem: ({ userId, itemId }, authToken) =>
+    request("/item/buy", { 
+      httpMethod: "POST",
+      dataToSend: { userId, itemId },
+      authToken
+    }),
+
+  equipItem: ({ userId, itemId, equip }, authToken) =>
+    request("/item/equip", { 
+      httpMethod: "POST",
+      dataToSend: { userId, itemId, equip },
+      authToken
+    }),
 };
