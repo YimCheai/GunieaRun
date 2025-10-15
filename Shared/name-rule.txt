@@ -2,9 +2,9 @@
 
 게임 화폐: hay
 유저 ID: userId
-아이템 타입: ITEM_TYPES = { hat, ribbon }
+아이템 타입: Item_Types = { hat, ribbon }
 
-과일(점수):
+과일(점수 = fruit_Scores):
 - 복숭아(peach): 10점
 - 체리(cherry): 20점  (복숭아보다 높음)
 
