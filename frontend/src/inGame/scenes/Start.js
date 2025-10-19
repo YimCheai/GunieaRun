@@ -28,7 +28,7 @@ export class Start extends Phaser.Scene {
         // 플레이어
         this.player = new Player(this, 34, 0);
 
-        // 땅 생성
+        // 땅
         this.grounds = this.physics.add.group({
             allowGravity: false,
             immovable: true
@@ -44,7 +44,7 @@ export class Start extends Phaser.Scene {
         // 아이템
         this.cherry = new Cherry(this, 371, 677);
 
-        // UI 테스트
+        // UI
         
         await document.fonts.load('400 40px "04B"');
 
