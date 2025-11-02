@@ -110,7 +110,6 @@ export class Start extends Phaser.Scene {
         // 충돌 설정
         this.physics.add.collider(this.player, this.grounds);
 
-
         //cherry overlap
         this.physics.add.overlap(this.player, this.cherry, ()=> {
             this.cherry.destroy();
