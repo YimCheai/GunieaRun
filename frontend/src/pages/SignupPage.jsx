@@ -4,10 +4,17 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
 import personImg from "../assets/images/person.png";
 import lockImg from "../assets/images/lock.png";
+<<<<<<< HEAD
 import eyeonImg from "../assets/images/eyeon.png";
 import eyeoffImg from "../assets/images/eyeoff.png";
 import mailImg from "../assets/images/mail.png";
 import logoImg from "../assets/images/login_logo.png";
+=======
+import eyeonImg from "../assets/images/eyes-on.png";
+import eyeoffImg from "../assets/images/eyes-off.png";
+import mailImg from "../assets/images/mail.png";
+import logoImg from "../assets/images/logo.png";
+>>>>>>> origin/main
 
 export default function SignUp() {
   const [form, setForm] = useState({ id: "", password: "", email: "" });
