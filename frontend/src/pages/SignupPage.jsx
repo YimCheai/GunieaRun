@@ -2,14 +2,15 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
+
 import personImg from "../assets/images/person.png";
 import lockImg from "../assets/images/lock.png";
-import eyeonImg from "../assets/images/eyes-on.png";
-import eyeoffImg from "../assets/images/eyes-off.png";
+import eyeonImg from "../assets/images/eyeon.png";   // ✅ 수정
+import eyeoffImg from "../assets/images/eyeoff.png"; // ✅ 수정
 import mailImg from "../assets/images/mail.png";
 import logoImg from "../assets/images/logo.png";
 
-export default function SignUp() {
+export default function SignupPage() {
   const [form, setForm] = useState({ id: "", password: "", email: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [passwordError, setPasswordError] = useState("");
@@ -54,75 +55,145 @@ export default function SignUp() {
     }
   };
 
-  const goToLogin = () => navigate("/login");
-
   return (
-    <div className="w-screen h-screen flex justify-center items-center bg-white font-[Pretendard]">
-      <form onSubmit={handleSubmit} className="flex flex-col items-center">
-        <img src={logoImg} alt="logo" className="w-[200px]" />
-        <div className="text-[45px] font-semibold mt-[42px] mb-[27px]">회원가입</div>
-        <div className="flex text-[24px] text-[#757575] mb-[50px]">
+    <div
+      style={{
+        margin: 0,
+        width: "100vw",
+        height: "100vh",
+        backgroundColor: "#fff",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        fontFamily: "'Pretendard', sans-serif",
+      }}
+    >
+      <form
+        onSubmit={handleSubmit}
+        style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+      >
+        <img src={logoImg} alt="logo" style={{ width: "200px" }} />
+
+        <div style={{ fontWeight: 600, fontSize: "45px", marginTop: "42px", marginBottom: "27px" }}>
+          회원가입
+        </div>
+
+        <div style={{ display: "flex", fontSize: "24px", color: "#757575", marginBottom: "50px" }}>
           이미 회원이신가요?
-          <span onClick={goToLogin} className="ml-[28px] font-bold text-black cursor-pointer">
+          <span
+            onClick={() => navigate("/login")}
+            style={{ marginLeft: "28px", fontWeight: 700, color: "#F482BD", cursor: "pointer" }}
+          >
             로그인
           </span>
         </div>
 
-        <div className="w-[680px] h-[243px] border border-[#d9d9d9] rounded-[25px] flex flex-col overflow-hidden">
-          <div className="flex flex-1 items-center px-[20px] text-[22px] border-b border-[#d9d9d9]">
-            <img src={personImg} className="w-[32px] h-[32px] mr-[16px] opacity-70" />
+        <div
+          style={{
+            width: "680px",
+            height: "243px",
+            border: "1px solid #d9d9d9",
+            borderRadius: "25px",
+            display: "flex",
+            flexDirection: "column",
+            overflow: "hidden",
+          }}
+        >
+          {/* 아이디 */}
+          <div
+            style={{
+              flex: 1,
+              display: "flex",
+              alignItems: "center",
+              padding: "0 20px",
+              borderBottom: "1px solid #d9d9d9",
+            }}
+          >
+            <img src={personImg} alt="user" style={{ width: 32, height: 32, marginRight: 16, opacity: 0.7 }} />
             <input
               type="text"
               name="id"
               placeholder="아이디"
               value={form.id}
               onChange={handleChange}
-              className="flex-1 text-[22px] outline-none"
               required
+              style={{ border: "none", outline: "none", fontSize: "22px", flex: 1 }}
             />
           </div>
 
-          <div className="flex flex-1 items-center px-[20px] text-[22px] border-b border-[#d9d9d9]">
-            <img src={lockImg} className="w-[32px] h-[32px] mr-[16px] opacity-70" />
+          {/* 비밀번호 */}
+          <div
+            style={{
+              flex: 1,
+              display: "flex",
+              alignItems: "center",
+              padding: "0 20px",
+              borderBottom: "1px solid #d9d9d9",
+            }}
+          >
+            <img src={lockImg} alt="lock" style={{ width: 32, height: 32, marginRight: 16, opacity: 0.7 }} />
             <input
               type={showPassword ? "text" : "password"}
               name="password"
               placeholder="비밀번호"
               value={form.password}
               onChange={handleChange}
-              className="flex-1 text-[22px] outline-none"
               required
+              style={{ border: "none", outline: "none", fontSize: "22px", flex: 1 }}
             />
             <img
-              src={showPassword ? eyeonImg : eyeoffImg}
+              src={showPassword ? eyeonImg : eyeoffImg} // ✅ eyeon / eyeoff
+              alt="toggle"
               onClick={() => setShowPassword(!showPassword)}
-              className="w-[32px] h-[32px] cursor-pointer"
+              style={{ width: 32, height: 32, cursor: "pointer" }}
             />
           </div>
 
-          <div className="flex flex-1 items-center px-[20px] text-[22px]">
-            <img src={mailImg} className="w-[32px] h-[32px] mr-[16px] opacity-70" />
+          {/* 이메일 */}
+          <div
+            style={{
+              flex: 1,
+              display: "flex",
+              alignItems: "center",
+              padding: "0 20px",
+            }}
+          >
+            <img src={mailImg} alt="mail" style={{ width: 32, height: 32, marginRight: 16, opacity: 0.7 }} />
             <input
               type="email"
               name="email"
-              placeholder="이메일 주소"
+              placeholder="이메일"
               value={form.email}
               onChange={handleChange}
-              className="flex-1 text-[22px] outline-none"
               required
+              style={{ border: "none", outline: "none", fontSize: "22px", flex: 1 }}
             />
           </div>
         </div>
 
         <button
           type="submit"
-          className="w-[680px] h-[88px] bg-black rounded-[25px] flex justify-center items-center mt-[80px] text-white text-[32px] font-semibold cursor-pointer"
+          style={{
+            width: "680px",
+            height: "88px",
+            backgroundColor: "#F482BD",
+            borderRadius: "25px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: "80px",
+            cursor: "pointer",
+            fontWeight: 600,
+            fontSize: "32px",
+            color: "#fff",
+            border: "none",
+          }}
         >
           회원가입
         </button>
 
         {(emailError || passwordError) && (
-          <div className="mt-4 text-red-500 text-[20px]">
+          <div style={{ marginTop: "15px", color: "red", fontSize: "20px" }}>
             {emailError || passwordError}
           </div>
         )}

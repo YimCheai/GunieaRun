@@ -12,12 +12,14 @@ build/
 .env
 .env.*
 backend/serviceAccountKey.json
+serviceAccountKey.json
 
 # OS/Editor
 .DS_Store
 Thumbs.db
 .vscode/
-
-settings.json
-.vscode/
+.settings.json
 .idea/
+
+# 기타
+phaser.js
