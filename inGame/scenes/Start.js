@@ -16,6 +16,8 @@ export class Start extends Phaser.Scene {
         this.load.image('player', 'assets/player.png');
         this.load.image('ground', 'assets/ground2.png');
         this.load.image('cherry', 'assets/cherry.png');
+        this.load.image('peach', 'assets/peach.png');
+        this.load.image('heartBar', 'assets/heartBar.png');
     }
 
     async create() {
@@ -48,7 +50,7 @@ export class Start extends Phaser.Scene {
         
         await document.fonts.load('400 40px "04B"');
 
-        this.peachPointTXT = this.add.text(1696, 111, `${this.player.cherry_point} x `, {
+        this.peachPointTXT = this.add.text(1696, 111, `${this.player.peach_point} x `, {
             fontFamily: this.font_04B,
             fontSize: 40,
             color: '#FFFFFF',
@@ -64,15 +66,66 @@ export class Start extends Phaser.Scene {
             strokeThickness: 8
         });
 
+        this.peachImage = this.add.image(1779, 56, 'peach')
+            .setOrigin(0, 0);
+        
+        this.cherryPointTXT = this.add.text(887, 968, ` x ${this.player.cherry_point}`, {
+            fontFamily: this.font_04B,
+            fontSize: 40,
+            color: '#FFFFFF',
+            stroke: '#000000',
+            strokeThickness: 8
+        });
+
+        this.cherryImage = this.add.image(773, 935, 'cherry')
+            .setOrigin(0, 0);
+
+        this.lifeTXT = this.add.text(41, 39, "LIFE", {
+            fontFamily: this.font_04B,
+            fontSize: 40,
+            color: '#FFFFFF',
+            stroke: '#000000',
+            strokeThickness: 8
+        });
+        
+        this.heartBarImage = this.add.image(20, 26, 'heartBar')
+            .setOrigin(0, 0);
+
+        this.scoreTXT = this.add.text(1697, 915, `SCORE`, {
+            fontFamily: this.font_04B,
+            fontSize: 40,
+            color: '#FFFFFF',
+            stroke: '#000000',
+            strokeThickness: 8
+        });
+
+        this.scorePointTXT = this.add.text(1627, 965, `${this.player.point}`, {
+            fontFamily: this.font_04B,
+            fontSize: 50,
+            color: '#FFFFFF',
+            stroke: '#000000',
+            strokeThickness: 8
+        });
 
         // 충돌 설정
         this.physics.add.collider(this.player, this.grounds);
 
+        //cherry overlap
         this.physics.add.overlap(this.player, this.cherry, ()=> {
             this.cherry.destroy();
             this.player.cherry_point += 1;
-            this.peachPointTXT.setText(`${this.player.cherry_point} x `);
+            this.player.point += 10;
+            this.cherryPointTXT.setText(` x ${this.player.cherry_point}`);
+            this.scorePointTXT.setText(`${this.player.point}`);
+        });
 
+        //peach overlap
+        this.physics.add.overlap(this.player, this.peach, ()=> {
+            this.peach.destroy();
+            this.player.peach_point += 1;
+            this.player.point += 20;
+            this.peachPointTXT.setText(`${this.player.peach_point} x `);
+            this.scorePointTXT.setText(`${this.player.point}`);
         });
     }
 

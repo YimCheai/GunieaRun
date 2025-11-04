@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import styles from "../styles/Login.module.css";
-import eyeonImg from "../assets/images/eye-on.png";
-import eyeoffImg from "../assets/images/eye-off.png";
+import eyeonImg from "../assets/images/eyes-on.png";
+import eyeoffImg from "../assets/images/eyes-off.png";
 import { useNavigate } from "react-router-dom";
-import { signInWithEmailAndPassword } from "firebase/auth"
-import { auth } from "../firebase/firebaseConfig"
-import styles from "../styles/Login.module.css"
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase/firebaseConfig";
 
 function Login() {
   const [form, setForm] = useState({ email: "", password: "" })
