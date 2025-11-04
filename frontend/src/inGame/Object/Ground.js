@@ -2,6 +2,7 @@ import Object from "./Object.js"
 
 
 
+
 export default class Ground extends Object {
     constructor(scene,x,y, img = 'ground'){
         super(scene, x, y, img);
