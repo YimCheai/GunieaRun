@@ -17,24 +17,32 @@ export class Start extends Phaser.Scene {
         this.load.image('ground', 'assets/ground2.png');
         this.load.image('cherry', 'assets/cherry.png');
         this.load.image('peach', 'assets/peach.png');
-        this.load.image('heartBar', 'assets/heartBar.png');
+        this.load.image('heartBar0', 'assets/heartBar0.png');
+        this.load.image('heartBar1', 'assets/heartBar1.png');
+        this.load.image('heartBar2', 'assets/heartBar2.png');
+        this.load.image('heartBar3', 'assets/heartBar3.png');
+        this.load.image('ball', 'assets/ball.png');
     }
 
-    async create() {
+    create() {
         console.log("Start scene created");
         this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         // 배경
         this.background = this.add.tileSprite(0, 0, this.scale.width, this.scale.height, 'background').setOrigin(0, 0);
+        
+        this.lives = 3;
 
-        // 플레이어
-        this.player = new Player(this, 34, 0);
 
         // 땅
         this.grounds = this.physics.add.group({
             allowGravity: false,
             immovable: true
         });
+
+        this.playerPlatforms = this.physics.add.staticGroup();
+        this.playerPlatforms.create(0, 877).setOrigin(0, 0).setSize(this.scale.width * 2, 10).setVisible(false);
+
 
         let groundX = 217;
         for (let i = 0; i < 100; i++) {
@@ -43,15 +51,19 @@ export class Start extends Phaser.Scene {
             groundX += 433;
         }
 
+        // 플레이어
+        this.player = new Player(this, 34, 600);
+
         // 아이템
         this.cherry = new Cherry(this, 371, 677);
+        this.cherry.setDisplaySize(120, 120);
         this.peach = new Item(this, 800, 677, 'peach');
-        this.peach.setDisplaySize(104, 94);
+        this.peach.setDisplaySize(124, 114);
 
 
         // UI
         
-        await document.fonts.load('400 40px "04B"');
+        document.fonts.load('400 40px "04B"');
 
         this.peachPointTXT = this.add.text(1696, 111, `${this.player.peach_point} x `, {
             fontFamily: this.font_04B,
@@ -69,8 +81,7 @@ export class Start extends Phaser.Scene {
             strokeThickness: 8
         });
 
-        this.peachImage = this.add.image(1779, 56, 'peach')
-            .setOrigin(0, 0);
+
         
         this.cherryPointTXT = this.add.text(887, 968, ` x ${this.player.cherry_point}`, {
             fontFamily: this.font_04B,
@@ -91,8 +102,14 @@ export class Start extends Phaser.Scene {
             strokeThickness: 8
         });
         
-        this.heartBarImage = this.add.image(20, 26, 'heartBar')
+        this.heartBarImage = this.add.image(41, 85, 'heartBar3')
             .setOrigin(0, 0);
+
+        // 장애물
+        this.ball = this.physics.add.sprite(1000, 837, 'ball');
+        this.ball.setDisplaySize(80, 80);
+        this.ball.setImmovable(true);
+        this.ball.body.setAllowGravity(false);
 
         this.scoreTXT = this.add.text(1697, 915, `SCORE`, {
             fontFamily: this.font_04B,
@@ -111,7 +128,9 @@ export class Start extends Phaser.Scene {
         });
 
         // 충돌 설정
-        this.physics.add.collider(this.player, this.grounds);
+        this.physics.add.collider(this.player, this.playerPlatforms);
+
+        this.physics.add.collider(this.player, this.ball, this.handleBallCollision, null, this);
 
         //cherry overlap
         this.physics.add.overlap(this.player, this.cherry, ()=> {
@@ -133,17 +152,37 @@ export class Start extends Phaser.Scene {
     }
 
     update() {
-        this.background.tilePositionX += 1.5;
+        this.background.tilePositionX += 5.0;
 
         this.player.jump(this.spaceKey);
 
         // 땅 움직이기 (스크롤)
         this.grounds.children.iterate(ground => {
-            ground.x -= 1.5;
+            ground.x -= 5.0;
             ground.body.updateFromGameObject();
         });
         
-        this.cherry.x -= 1.5;
-        this.peach.x -= 1.5;
+        this.cherry.x -= 5.0;
+        this.peach.x -= 5.0;
+        this.ball.x -= 5.0;
+    }
+
+    handleBallCollision(player, ball) {
+        this.lives--;
+        this.updateHeartBar();
+        ball.destroy();
+
+        if (this.lives <= 0) {
+            this.gameOver();
+        }
+    }
+
+    updateHeartBar() {
+        this.heartBarImage.setTexture(`heartBar${this.lives}`);
+    }
+
+    gameOver() {
+        this.physics.pause();
+        this.player.setTint(0xff0000);
     }
 }

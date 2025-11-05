@@ -5,6 +5,5 @@ export default class Cherry extends Item {
     constructor(scene, x, y){
         super(scene, x, y , 'cherry')
 
-        this.setDisplaySize(104, 94)
     }
 }
