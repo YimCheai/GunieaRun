@@ -5,8 +5,8 @@ import { auth } from "../firebase/firebaseConfig";
 
 import personImg from "../assets/images/person.png";
 import lockImg from "../assets/images/lock.png";
-import eyeonImg from "../assets/images/eyeon.png";   // ✅ 수정
-import eyeoffImg from "../assets/images/eyeoff.png"; // ✅ 수정
+import eyeonImg from "../assets/images/eyes-on.png";   // ✅ 수정
+import eyeoffImg from "../assets/images/eyes-off.png"; // ✅ 수정
 import mailImg from "../assets/images/mail.png";
 import logoImg from "../assets/images/logo.png";
 
