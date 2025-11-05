@@ -1,16 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase/firebaseConfig";
-import personImg from "../assets/images/person.png";
-import lockImg from "../assets/images/lock.png";
-import eyeonImg from "../assets/images/eyes-on.png";
-import eyeoffImg from "../assets/images/eyes-off.png";
-import mailImg from "../assets/images/mail.png";
-import logoImg from "../assets/images/logo.png";
+import { auth } from "../firebase/firebaseConfig"
 
-export default function SignUp() {
-  const [form, setForm] = useState({ id: "", password: "", email: "" });
+function SignUp() {
+  const [form, setForm] = useState({ password: "", email: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [passwordError, setPasswordError] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -130,3 +124,5 @@ export default function SignUp() {
     </div>
   );
 }
+
+export default SignUp;

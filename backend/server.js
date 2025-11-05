@@ -94,7 +94,7 @@ app.post("/item/buy", (req, res) => {
 
   if (!user || !item) return res.status(400).json({ ok:false, error:"유저나 아이템 없음" });
   if (user.hay < item.price) return res.json({ ok:false, error:"잔액 부족" });
-
+ㄴ
   user.hay -= item.price;
   if (!userItems[userId]) userItems[userId] = [];
   userItems[userId].push({ itemId: item.itemId, type: item.type, isEquipped: false });
@@ -105,7 +105,7 @@ app.post("/item/buy", (req, res) => {
 // 아이템 착용/해제 (동일 type은 1개만 착용)
 app.post("/item/equip", (req, res) => {
   const { userId, itemId, equip } = req.body || {};
-  if (!userId || !itemId || typeof equip !== "boolean") return res.status(400).json({ ok:false, error:"bad params" });
+  if (!userId || !itemId || typeof equip !== "boolean") return res.status(400).json({ ok:false, error:"잘못된 파라미터" });
 
   const inv = userItems[userId] ?? [];
   const meta = items.find(i => i.itemId === itemId);
@@ -120,7 +120,7 @@ app.post("/item/equip", (req, res) => {
 });
 
  /* ===============================*/
-app.get("/api/health", (_req, res) => res.json({ ok:true, msg:"Server running" }));
+app.get("/api/health", (_req, res) => res.json({ ok:true, msg:"서버 실행 중" }));
 
 // SPA 라우팅 (Express v5 대응): API 제외 나머지는 index.html
 app.get(/^(?!\/(user|score|item|api)\b).*/, (_req, res) => {
@@ -128,4 +128,4 @@ app.get(/^(?!\/(user|score|item|api)\b).*/, (_req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`✅ Server running on http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`서버 실행 위치 : http://localhost:${PORT}`));
