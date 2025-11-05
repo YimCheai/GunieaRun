@@ -1,10 +1,23 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase/firebaseConfig"
+import { auth } from "../firebase/firebaseConfig";
+import personImg from "../assets/images/person.png";
+import lockImg from "../assets/images/lock.png";
+<<<<<<< HEAD
+import eyeonImg from "../assets/images/eyeon.png";
+import eyeoffImg from "../assets/images/eyeoff.png";
+import mailImg from "../assets/images/mail.png";
+import logoImg from "../assets/images/login_logo.png";
+=======
+import eyeonImg from "../assets/images/eyes-on.png";
+import eyeoffImg from "../assets/images/eyes-off.png";
+import mailImg from "../assets/images/mail.png";
+import logoImg from "../assets/images/logo.png";
+>>>>>>> origin/main
 
-function SignUp() {
-  const [form, setForm] = useState({ password: "", email: "" });
+export default function SignUp() {
+  const [form, setForm] = useState({ id: "", password: "", email: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [passwordError, setPasswordError] = useState("");
   const [emailError, setEmailError] = useState("");
