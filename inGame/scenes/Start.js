@@ -102,7 +102,7 @@ export class Start extends Phaser.Scene {
             strokeThickness: 8
         });
 
-        this.scorePointTXT = this.add.text(1627, 965, `${this.player.point}`, {
+        this.scorePointTXT = this.add.text(1627, 965, `${String(this.player.point).padStart(6, '0')}`, {
             fontFamily: this.font_04B,
             fontSize: 50,
             color: '#FFFFFF',
@@ -119,7 +119,7 @@ export class Start extends Phaser.Scene {
             this.player.cherry_point += 1;
             this.player.point += 20;
             this.cherryPointTXT.setText(` x ${this.player.cherry_point}`);
-            this.scorePointTXT.setText(`${this.player.point}`);
+            this.scorePointTXT.setText(`${String(this.player.point).padStart(6, '0')}`);
         });
 
         //peach overlap
@@ -128,7 +128,7 @@ export class Start extends Phaser.Scene {
             this.player.peach_point += 1;
             this.player.point += 10;
             this.peachPointTXT.setText(`${this.player.peach_point} x `);
-            this.scorePointTXT.setText(`${this.player.point}`);
+            this.scorePointTXT.setText(`${String(this.player.point).padStart(6, '0')}`);
         });
     }
 
