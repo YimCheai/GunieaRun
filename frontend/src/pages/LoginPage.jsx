@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { signInWithEmailAndPassword } from "firebase/auth"
 import { auth } from "../firebase/firebaseConfig"
 
-// ✅ 이미지 import (회원가입과 동일 방식)
+// ✅ 이미지 import
 import personImg from "../assets/images/person.png"
 import lockImg from "../assets/images/lock.png"
 import eyeonImg from "../assets/images/eyes-on.png"
@@ -28,7 +28,9 @@ function Login() {
     try {
       await signInWithEmailAndPassword(auth, form.email, form.password)
       alert("로그인 성공!")
-      navigate("/home")
+      
+      // ✅ 로그인 완료 시 Waiting 화면으로 이동
+      navigate("/waiting")
     } catch (err) {
       alert("이메일 또는 비밀번호가 올바르지 않습니다")
     } finally {
