@@ -44,41 +44,16 @@ export class Start extends Phaser.Scene {
         }
 
         // 아이템
-        this.cherry = new Cherry(this, 371, 677);
+        this.items = this.physics.add.group();
+        const cherry = new Cherry(this, 371, 677);
+        this.items.add(cherry);
+        const peach = new Item(this, 800, 677, 'peach');
+        peach.setDisplaySize(104, 94); // Assuming similar size to cherry
+        this.items.add(peach);
 
         // UI
         
         await document.fonts.load('400 40px "04B"');
-
-        this.peachPointTXT = this.add.text(1696, 111, `${this.player.peach_point} x `, {
-            fontFamily: this.font_04B,
-            fontSize: 40,
-            color: '#FFFFFF',
-            stroke: '#000000',
-            strokeThickness: 8
-        });
-        
-        this.peachTXT = this.add.text(1696, 39,"PEACH", {
-            fontFamily: this.font_04B,
-            fontSize: 40,
-            color: '#FFFFFF',
-            stroke: '#000000',
-            strokeThickness: 8
-        });
-
-        this.peachImage = this.add.image(1779, 56, 'peach')
-            .setOrigin(0, 0);
-        
-        this.cherryPointTXT = this.add.text(887, 968, ` x ${this.player.cherry_point}`, {
-            fontFamily: this.font_04B,
-            fontSize: 40,
-            color: '#FFFFFF',
-            stroke: '#000000',
-            strokeThickness: 8
-        });
-
-        this.cherryImage = this.add.image(773, 935, 'cherry')
-            .setOrigin(0, 0);
 
         this.lifeTXT = this.add.text(41, 39, "LIFE", {
             fontFamily: this.font_04B,
@@ -91,41 +66,34 @@ export class Start extends Phaser.Scene {
         this.heartBarImage = this.add.image(20, 26, 'heartBar')
             .setOrigin(0, 0);
 
-        this.scoreTXT = this.add.text(1697, 915, `SCORE`, {
+        this.scoreTXT = this.add.text(1879, 39, `SCORE`, {
             fontFamily: this.font_04B,
             fontSize: 40,
             color: '#FFFFFF',
             stroke: '#000000',
             strokeThickness: 8
-        });
+        }).setOrigin(1, 0);
 
-        this.scorePointTXT = this.add.text(1627, 965, `${this.player.point}`, {
+        this.scorePointTXT = this.add.text(1879, 89, `${this.player.point}`, {
             fontFamily: this.font_04B,
             fontSize: 50,
             color: '#FFFFFF',
             stroke: '#000000',
             strokeThickness: 8
-        });
+        }).setOrigin(1, 0);
 
         // 충돌 설정
         this.physics.add.collider(this.player, this.grounds);
 
-        //cherry overlap
-        this.physics.add.overlap(this.player, this.cherry, ()=> {
-            this.cherry.destroy();
-            this.player.cherry_point += 1;
-            this.player.point += 10;
-            this.cherryPointTXT.setText(` x ${this.player.cherry_point}`);
-            this.scorePointTXT.setText(`${this.player.point}`);
-        });
-
-        //peach overlap
-        this.physics.add.overlap(this.player, this.peach, ()=> {
-            this.peach.destroy();
-            this.player.peach_point += 1;
-            this.player.point += 20;
-            this.peachPointTXT.setText(`${this.player.peach_point} x `);
-            this.scorePointTXT.setText(`${this.player.point}`);
+        //item overlap
+        this.physics.add.overlap(this.player, this.items, (player, item)=> {
+            if (item.texture.key === 'cherry') {
+                player.point += 10;
+            } else if (item.texture.key === 'peach') {
+                player.point += 20;
+            }
+            item.destroy();
+            this.scorePointTXT.setText(`${player.point}`);
         });
     }
 
@@ -140,6 +108,10 @@ export class Start extends Phaser.Scene {
             ground.body.updateFromGameObject();
         });
         
-        this.cherry.x -= 1.5;
+        this.items.children.iterate(item => {
+            if (item) {
+                item.x -= 1.5;
+            }
+        });
     }
 }
