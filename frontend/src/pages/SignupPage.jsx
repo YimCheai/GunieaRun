@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
 import styles from "../styles/Auth.module.css";
-
 import logoImg from "../assets/images/logo.png";
 import personImg from "../assets/images/person.png";
 import mailImg from "../assets/images/mail.png";

@@ -1,3 +1,21 @@
+<<<<<<< HEAD
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+.signup-body {
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+=======
 /* Login.module.css */
 
 .signupContainer {
@@ -8,10 +26,67 @@
   height: 100vh;
   background: #fff;
   font-family: "Pretendard", sans-serif;
+>>>>>>> 58a79f2d8b89f8ddd8a1870a9d0d88fd4522ee97
 }
 
 .logo {
   width: 200px;
+<<<<<<< HEAD
+  height: auto;
+}
+
+.signup-title {
+  font-family: 'Pretendard', sans-serif;
+  font-weight: 600;
+  font-size: 45px;
+  margin-top: 42px;
+  margin-bottom: 27px;
+}
+
+.login-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 24px;
+  color: #757575;
+  margin-bottom: 50px;
+}
+
+.login-text span {
+  margin-left: 28px;
+  font-weight: 700;
+  color: #000;
+  cursor: pointer;
+}
+
+.input-box {
+  width: 680px;
+  height: 243px;
+  border: 1px solid #d9d9d9;
+  border-radius: 25px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.input-row {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 22px;
+  color: #d9d9d9;
+  border-top: 1px solid #d9d9d9;
+}
+
+.input-row:first-child {
+  border-top: none;
+}
+
+.icon {
+=======
   margin-bottom: 40px;
 }
 
@@ -59,12 +134,48 @@
 }
 
 .inputLine img {
+>>>>>>> 58a79f2d8b89f8ddd8a1870a9d0d88fd4522ee97
   width: 32px;
   height: 32px;
   margin-right: 16px;
   opacity: 0.7;
 }
 
+<<<<<<< HEAD
+.input-row input {
+  border: none;
+  outline: none;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 22px;
+  flex: 1;
+  color: #000;
+}
+
+.input-row input::placeholder {
+  color: #d9d9d9;
+}
+
+.eye-icon {
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+}
+
+.signup-button {
+  width: 680px;
+  height: 88px;
+  background-color: #000;
+  border-radius: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 80px;
+  cursor: pointer;
+  font-family: 'Pretendard', sans-serif;
+  font-weight: 600;
+  font-size: 32px;
+  color: #fff;
+=======
 .inputLine input {
   flex: 1;
   font-size: 22px;
@@ -99,4 +210,5 @@
 .signupButton:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+>>>>>>> 58a79f2d8b89f8ddd8a1870a9d0d88fd4522ee97
 }

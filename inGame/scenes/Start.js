@@ -108,7 +108,7 @@ export class Start extends Phaser.Scene {
     try {
       await document.fonts.load('400 40px "04B"');
     } catch (error) {
-      console.warn('Font loading failed:', error);
+      console.log('Font loading failed:', error);
     }
 
     // UI 생성
@@ -257,13 +257,13 @@ export class Start extends Phaser.Scene {
       pattern.items.forEach(({ type, col, dy }) => {
         const factory = this.objectFactories[type];
         if (!factory) {
-          console.warn(`Unknown object type: ${type}`);
+          console.log(`Unknown object type: ${type}`);
           return;
         }
         
         // 해당 열에 땅이 있는지 확인
         if (pattern.cols[col] !== 1) {
-          console.warn(`Item at col ${col} has no ground`);
+          console.log(`Item at col ${col} has no ground`);
           return;
         }
         
@@ -446,4 +446,7 @@ export class Start extends Phaser.Scene {
       }
     }
   }
+  
 }
+
+export default Start;
