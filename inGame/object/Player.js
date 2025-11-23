@@ -7,12 +7,14 @@ export default class Player extends Object {
 
 
         this.life = 3;
+        this.cherry_point = 0;
+        this.peach_point = 0;
         this.point = 0;
     }
 
     jump(spaceKey){
         if (spaceKey.isDown && this.body.touching.down){
-            this.setVelocityY(-630);
+            this.setVelocityY(-900);
         }
     }
 }

@@ -25,7 +25,7 @@ export default function Waiting() {
 
   const handleStart = () => {
     console.log('Start 클릭 - Phaser 게임으로 이동');
-    navigate('/game'); // Phaser 게임 경로
+    navigate('/ingame'); // 공백 제거, InGame 페이지로 이동
   };
 
   return (
@@ -78,7 +78,7 @@ export default function Waiting() {
             height: 'auto',
             cursor: 'pointer',
           }}
-          onClick={handleStart} // Phaser 게임으로 이동
+          onClick={handleStart}
         />
 
         {/* 왼쪽 위 logout 버튼 */}
@@ -140,3 +140,4 @@ export default function Waiting() {
     </>
   );
 }
+    
