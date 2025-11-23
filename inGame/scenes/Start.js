@@ -150,131 +150,58 @@ export class Start extends Phaser.Scene {
       .setScrollFactor(0)
       .setDepth(1000);
 
-    // 체리 UI
-    this.cherryPointTXT = this.add.text(887, 968, ` x ${this.player.cherry_point}`, {
-      fontFamily: this.font_04B, 
-      fontSize: 40, 
-      color: '#FFFFFF', 
-      stroke: '#000000', 
-      strokeThickness: 8
-    }).setScrollFactor(0).setDepth(1000);
-    
-    this.cherryImage = this.add.image(773, 935, 'cherry')
-      .setOrigin(0, 0)
-      .setScrollFactor(0)
-      .setDepth(1000);
+        // 아이템
+        this.items = this.physics.add.group();
+        const cherry = new Cherry(this, 371, 677);
+        this.items.add(cherry);
+        const peach = new Item(this, 800, 677, 'peach');
+        peach.setDisplaySize(104, 94); // Assuming similar size to cherry
+        this.items.add(peach);
 
-    // 라이프 UI
-    this.lifeTXT = this.add.text(41, 39, 'LIFE', {
-      fontFamily: this.font_04B, 
-      fontSize: 40, 
-      color: '#FFFFFF', 
-      stroke: '#000000', 
-      strokeThickness: 8
-    }).setScrollFactor(0).setDepth(1000);
-    
-    this.heartBarImage = this.add.image(20, 26, 'heartBar')
-      .setOrigin(0, 0)
-      .setScrollFactor(0)
-      .setDepth(1000);
-
-    // 점수 UI
-    this.scoreTXT = this.add.text(1697, 915, 'SCORE', {
-      fontFamily: this.font_04B, 
-      fontSize: 40, 
-      color: '#FFFFFF', 
-      stroke: '#000000', 
-      strokeThickness: 8
-    }).setScrollFactor(0).setDepth(1000);
-    
-    this.scorePointTXT = this.add.text(1627, 965, `${this.player.point}`, {
-      fontFamily: this.font_04B, 
-      fontSize: 50, 
-      color: '#FFFFFF', 
-      stroke: '#000000', 
-      strokeThickness: 8
-    }).setScrollFactor(0).setDepth(1000);
-
-    // 게임 오버 UI (초기에는 숨김)
-    this.gameOverText = this.add.text(
-      this.scale.width / 2, 
-      this.scale.height / 2, 
-      'GAME OVER', 
-      {
-        fontFamily: this.font_04B,
-        fontSize: 80,
-        color: '#FF0000',
-        stroke: '#000000',
-        strokeThickness: 10
-      }
-    ).setOrigin(0.5)
-     .setScrollFactor(0)
-     .setDepth(2000)
-     .setVisible(false);
-
-    this.restartText = this.add.text(
-      this.scale.width / 2, 
-      this.scale.height / 2 + 100, 
-      'Press SPACE to Restart', 
-      {
-        fontFamily: this.font_04B,
-        fontSize: 40,
-        color: '#FFFFFF',
-        stroke: '#000000',
-        strokeThickness: 8
-      }
-    ).setOrigin(0.5)
-     .setScrollFactor(0)
-     .setDepth(2000)
-     .setVisible(false);
-  }
-
-  // 랜덤 패턴 선택
-  getRandomPattern() {
-    const index = Phaser.Math.Between(0, this.chunkPatterns.length - 1);
-    return this.chunkPatterns[index];
-  }
-
-  // 청크 생성
-  spawnChunk(pattern, startX) {
-    const grounds = [];
-    const objects = [];
-
-    // 땅 생성
-    pattern.cols.forEach((hasGround, index) => {
-      if (!hasGround) return;
-      
-      const x = startX + index * this.SEGMENT_WIDTH;
-      const ground = new Ground(this, x, this.GROUND_Y);
-      ground.setDepth(10);
-      
-      this.grounds.add(ground);
-      grounds.push(ground);
-    });
-
-    // 아이템 생성
-    if (pattern.items && pattern.items.length > 0) {
-      pattern.items.forEach(({ type, col, dy }) => {
-        const factory = this.objectFactories[type];
-        if (!factory) {
-          console.warn(`Unknown object type: ${type}`);
-          return;
-        }
+        // UI
         
-        // 해당 열에 땅이 있는지 확인
-        if (pattern.cols[col] !== 1) {
-          console.warn(`Item at col ${col} has no ground`);
-          return;
-        }
+        await document.fonts.load('400 40px "04B"');
+
+        this.lifeTXT = this.add.text(41, 39, "LIFE", {
+            fontFamily: this.font_04B,
+            fontSize: 40,
+            color: '#FFFFFF',
+            stroke: '#000000',
+            strokeThickness: 8
+        });
         
-        const x = startX + col * this.SEGMENT_WIDTH + this.SEGMENT_WIDTH * 0.5;
-        const y = this.GROUND_Y + (dy || 0);
-        const obj = factory(this, x, y);
-        obj.setDepth(20);
-        
-        this.objects.add(obj);
-        objects.push(obj);
-      });
+        this.heartBarImage = this.add.image(20, 26, 'heartBar')
+            .setOrigin(0, 0);
+
+        this.scoreTXT = this.add.text(1879, 39, `SCORE`, {
+            fontFamily: this.font_04B,
+            fontSize: 40,
+            color: '#FFFFFF',
+            stroke: '#000000',
+            strokeThickness: 8
+        }).setOrigin(1, 0);
+
+        this.scorePointTXT = this.add.text(1879, 89, `${this.player.point}`, {
+            fontFamily: this.font_04B,
+            fontSize: 50,
+            color: '#FFFFFF',
+            stroke: '#000000',
+            strokeThickness: 8
+        }).setOrigin(1, 0);
+
+        // 충돌 설정
+        this.physics.add.collider(this.player, this.grounds);
+
+        //item overlap
+        this.physics.add.overlap(this.player, this.items, (player, item)=> {
+            if (item.texture.key === 'cherry') {
+                player.point += 10;
+            } else if (item.texture.key === 'peach') {
+                player.point += 20;
+            }
+            item.destroy();
+            this.scorePointTXT.setText(`${player.point}`);
+        });
     }
 
     // 청크 메타데이터 생성
@@ -305,53 +232,7 @@ export class Start extends Phaser.Scene {
     });
   }
 
-  // 청크 재활용
-  recycleChunk(oldChunk, newStartX) {
-    // 기존 오브젝트 제거
-    this.destroyChunk(oldChunk);
 
-    // 새 패턴으로 청크 생성
-    const pattern = this.getRandomPattern();
-    const newChunk = this.spawnChunk(pattern, newStartX);
-
-    // 배열에서 교체
-    const index = this.chunks.indexOf(oldChunk);
-    if (index >= 0) {
-      this.chunks[index] = newChunk;
-    }
-
-    return newChunk;
-  }
-
-  // 초기 청크 생성
-  generateInitialChunks() {
-    const screenWidth = this.scale.width;
-    const bufferChunks = 3;
-    
-    // 화면을 채우고도 여유있게 청크 생성
-    const targetWidth = screenWidth + (bufferChunks * this.SEGMENT_WIDTH * 4);
-    let currentX = this.START_X;
-    
-    while (currentX - this.START_X < targetWidth) {
-      const pattern = this.getRandomPattern();
-      const chunk = this.spawnChunk(pattern, currentX);
-      currentX += chunk.width;
-    }
-    
-    console.log(`Initial chunks created: ${this.chunks.length}`);
-  }
-
-  // 오브젝트 충돌 처리
-  handleObjectCollision(obj) {
-    const type = obj.getData('type');
-    
-    if (type === 'cherry') {
-      obj.destroy();
-      this.player.cherry_point += 1;
-      this.player.point += 10;
-      this.cherryPointTXT.setText(` x ${this.player.cherry_point}`);
-      this.scorePointTXT.setText(`${this.player.point}`);
-    } 
     else if (type === 'peach') {
       obj.destroy();
       this.player.peach_point += 1;
@@ -444,6 +325,17 @@ export class Start extends Phaser.Scene {
         const newChunk = this.recycleChunk(chunk, rightmostEdge);
         rightmostEdge += newChunk.width;
       }
+        // 땅 움직이기 (스크롤)
+        this.grounds.children.iterate(ground => {
+            ground.x -= 1.5;
+            ground.body.updateFromGameObject();
+        });
+        
+        this.items.children.iterate(item => {
+            if (item) {
+                item.x -= 1.5;
+            }
+        });
     }
   }
 }
