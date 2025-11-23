@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+node_modules/
+serviceAccountKey.json
+phaser.js
+=======
 # dependencies
 node_modules/
 backend/node_modules/
@@ -21,3 +26,4 @@ Thumbs.db
 settings.json
 .vscode/
 .idea/
+>>>>>>> origin/main

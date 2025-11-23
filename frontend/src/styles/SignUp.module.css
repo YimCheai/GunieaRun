@@ -1,0 +1,102 @@
+/* Login.module.css */
+
+.signupContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: #fff;
+  font-family: "Pretendard", sans-serif;
+}
+
+.logo {
+  width: 200px;
+  margin-bottom: 40px;
+}
+
+.title {
+  font-size: 45px;
+  font-weight: 600;
+  margin-bottom: 27px;
+  color: #000;
+}
+
+.loginPrompt {
+  font-size: 20px;
+  color: #757575;
+  margin-top: 40px;
+}
+
+.loginPrompt span {
+  color: #ff4fa0;
+  font-weight: bold;
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+/* 입력 영역 */
+.inputGroupBox {
+  width: 680px;
+  border: 1px solid #d9d9d9;
+  border-radius: 25px;
+  overflow: hidden;
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+.inputLine {
+  display: flex;
+  align-items: center;
+  height: 80px;
+  border-bottom: 1px solid #d9d9d9;
+  padding: 0 20px;
+}
+
+.inputLine:last-child {
+  border-bottom: none;
+}
+
+.inputLine img {
+  width: 32px;
+  height: 32px;
+  margin-right: 16px;
+  opacity: 0.7;
+}
+
+.inputLine input {
+  flex: 1;
+  font-size: 22px;
+  border: none;
+  outline: none;
+  color: #000;
+}
+
+.inputLine input::placeholder {
+  color: #b7b7b7;
+}
+
+/* 버튼 */
+.signupButton {
+  width: 680px;
+  height: 88px;
+  background-color: #ff74a8;
+  border: none;
+  border-radius: 25px;
+  color: #fff;
+  font-size: 32px;
+  font-weight: 600;
+  margin-top: 60px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.signupButton:hover {
+  background-color: #ff5f97;
+}
+
+.signupButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
