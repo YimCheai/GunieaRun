@@ -5,7 +5,6 @@ export default class Player extends Object {
         super(scene, x, y, 'player');
         this.setOrigin(0,0);
 
-
         this.life = 3;
         this.cherry_point = 0;
         this.peach_point = 0;
